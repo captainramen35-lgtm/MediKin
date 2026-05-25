@@ -1,5 +1,7 @@
 # MediKin 🏥 — Premium Smart Emergency Health Companion
 
+## Demo link: https://medi-kin.vercel.app/
+
 MediKin is a next-generation, high-performance, dark-themed medical emergency companion app built using **React, Vite, and Firebase**. It is designed to save lives in critical situations by giving emergency responders and doctors immediate, zero-latency access to a patient's core medical data, hand-written prescriptions, and radiological scans via a simple QR code scan, while triggering automated multi-channel SOS dispatches to caregivers.
 
 ---
