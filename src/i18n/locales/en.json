@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "scan": "Scan QR",
+    "logout": "Logout",
+    "newProfile": "New Profile"
+  },
+  "dashboard": {
+    "title": "Your Family Profiles",
+    "empty": "No profiles yet. Create one for someone you love.",
+    "createFirst": "Create First Profile",
+    "lastUpdated": "Last updated",
+    "staleMedication": "Some profiles may have outdated medications. Review them.",
+    "aiInsights": "AI Insights",
+    "viewQR": "View QR",
+    "edit": "Edit",
+    "emergency": "Emergency Brief",
+    "calendar": "Calendar",
+    "vitals": "Vitals",
+    "sos": "SOS",
+    "lastSos": "Last SOS"
+  },
+  "emergency": {
+    "title": "Emergency Medical Brief",
+    "criticalAlerts": "CRITICAL ALERTS — READ FIRST",
+    "medicalSummary": "Medical Summary",
+    "bloodGroup": "Blood Group",
+    "medications": "Active Medications",
+    "allergies": "Known Allergies",
+    "surgeries": "Past Surgeries",
+    "contacts": "Emergency Contacts",
+    "print": "Print This Brief",
+    "footer": "Information provided by patient's family via MediKin."
+  },
+  "sos": {
+    "button": "SOS — Send Emergency Alert",
+    "confirmTitle": "Send Emergency SOS?",
+    "confirmBody": "This will immediately alert all emergency contacts via call, WhatsApp, SMS, and email.",
+    "holdToConfirm": "Hold to Confirm",
+    "sending": "Sending alerts...",
+    "success": "Emergency contacts have been notified. Help is on the way.",
+    "noAlerts": "No SOS alerts triggered yet."
+  },
+  "recommendations": {
+    "title": "AI Health Insights",
+    "disclaimer": "These recommendations are AI-generated based on profile data. Always consult your doctor before making any medical decisions.",
+    "refresh": "Refresh Recommendations",
+    "lastGenerated": "Last generated",
+    "medication": "Medication",
+    "diet": "Diet",
+    "lifestyle": "Lifestyle",
+    "warning": "Warning",
+    "checkup": "Checkup Due",
+    "high": "High Priority",
+    "medium": "Medium Priority",
+    "low": "Low Priority"
+  },
+  "calendar": {
+    "title": "Checkup Calendar",
+    "addCheckup": "Add Checkup",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "noCheckups": "No checkups scheduled.",
+    "schedule": "Schedule",
+    "aiSuggested": "AI Suggested Checkups"
+  },
+  "wearable": {
+    "title": "Health Vitals",
+    "connect": "Connect Google Fit",
+    "connected": "Connected",
+    "steps": "Steps Today",
+    "heartRate": "Heart Rate",
+    "sleep": "Sleep",
+    "lastSync": "Last synced",
+    "demoMode": "Demo Mode"
+  },
+  "profile": {
+    "create": "Create Profile",
+    "step1": "Patient Info",
+    "step2": "Conditions",
+    "step3": "Medications",
+    "step4": "Allergies & Surgeries",
+    "step5": "Emergency Contacts",
+    "save": "Save Profile",
+    "next": "Next",
+    "back": "Back"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
+  }
+}
