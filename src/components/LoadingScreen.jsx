@@ -1,3 +1,5 @@
+import logoImg from "../assets/logo.png";
+
 const LoadingScreen = () => (
   <div
     style={{
@@ -13,27 +15,18 @@ const LoadingScreen = () => (
     }}
   >
     {/* Pulsing logo */}
-    <div
+    <img
+      src={logoImg}
+      alt="MediKin Logo"
       style={{
-        width: "64px",
-        height: "64px",
-        background: "var(--accent-red)",
-        borderRadius: "16px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        width: "68px",
+        height: "68px",
+        borderRadius: "50%",
+        objectFit: "cover",
+        border: "1px solid rgba(255,255,255,0.1)",
         animation: "loadingPulse 1.4s ease-in-out infinite",
       }}
-    >
-      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
-        <path
-          d="M17 4v26M4 17h26"
-          stroke="white"
-          strokeWidth="4"
-          strokeLinecap="round"
-        />
-      </svg>
-    </div>
+    />
 
     <span
       style={{

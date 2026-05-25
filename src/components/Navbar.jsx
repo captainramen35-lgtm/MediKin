@@ -6,6 +6,7 @@ import { getInitials } from "../utils/helpers";
 import { useToast } from "../context/ToastContext";
 import { Cross, QrCode, LogOut, LayoutDashboard, Scan } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
+import logoImg from "../assets/logo.png";
 import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
@@ -46,26 +47,17 @@ const Navbar = () => {
           gap: "10px",
         }}
       >
-        <div
+        <img
+          src={logoImg}
+          alt="MediKin Logo"
           style={{
             width: "32px",
             height: "32px",
-            background: "var(--accent-red)",
-            borderRadius: "8px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "1px solid rgba(255,255,255,0.1)",
           }}
-        >
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path
-              d="M9 2v14M2 9h14"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
+        />
         <span
           style={{
             fontFamily: "'Syne', sans-serif",
