@@ -8,6 +8,7 @@ import { useToast } from "../context/ToastContext";
 import BloodGroupBadge from "../components/BloodGroupBadge";
 import SkeletonLoader from "../components/SkeletonLoader";
 import { Download, Printer, Copy, ArrowLeft, Zap, MessageSquare } from "lucide-react";
+import logoImg from "../assets/logo.png";
 
 const QRPage = () => {
   const { id } = useParams();
@@ -239,21 +240,17 @@ const QRPage = () => {
                 marginBottom: "16px",
               }}
             >
-              <div
+              <img
+                src={logoImg}
+                alt="MediKin Logo"
                 style={{
                   width: "28px",
                   height: "28px",
-                  background: "#E63946",
-                  borderRadius: "6px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  border: "1px solid rgba(0,0,0,0.06)",
                 }}
-              >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M7 1v12M1 7h12" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
+              />
               <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: "20px" }}>MediKin</span>
             </div>
             <h2 style={{ fontSize: "22px", fontWeight: 700, marginBottom: "4px" }}>

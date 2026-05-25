@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Users, QrCode, Zap, Heart, Shield, Activity, ArrowRight, Scan, PhoneCall, Sparkles, Calendar as CalendarIcon } from "lucide-react";
+import logoImg from "../assets/logo.png";
 
 // EKG SVG path
 const EKG_PATH = "M 0 50 L 60 50 L 70 50 L 80 20 L 90 80 L 100 10 L 110 90 L 120 50 L 130 50 L 800 50";
@@ -86,22 +87,17 @@ const Landing = () => {
               textTransform: "uppercase",
             }}
           >
-            <div
+            <img
+              src={logoImg}
+              alt="MediKin Logo"
               style={{
-                width: "20px",
-                height: "20px",
-                background: "var(--accent-red)",
-                borderRadius: "5px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                width: "22px",
+                height: "22px",
+                borderRadius: "50%",
+                objectFit: "cover",
                 flexShrink: 0,
               }}
-            >
-              <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1v12M1 7h12" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </div>
+            />
             <span>MediKin</span>
           </motion.div>
 
