@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Suspense } from "react";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -29,8 +29,9 @@ import "./i18n";
 const NO_NAV_ROUTES = ["/emergency/", "/chat/"];
 
 const AppContent = () => {
+  const location = useLocation();
   const showNav = !NO_NAV_ROUTES.some((path) =>
-    window.location.pathname.startsWith(path)
+    location.pathname.startsWith(path)
   );
 
   return (

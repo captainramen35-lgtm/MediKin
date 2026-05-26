@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useProfile } from "../hooks/useProfile";
 import { generateChatResponse } from "../utils/groq";
-import { Send, Bot, User, Zap } from "lucide-react";
+import { Send, Bot, User, Zap, ArrowLeft } from "lucide-react";
 
 const SUGGESTED_QUESTIONS = [
   "What does the first medication do?",
@@ -14,6 +14,7 @@ const SUGGESTED_QUESTIONS = [
 
 const ChatPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { profile, loading } = useProfile(id);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -118,6 +119,30 @@ Never replace professional medical advice. Always recommend consulting a doctor 
           flexShrink: 0,
         }}
       >
+        {/* Back Button */}
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="btn-ghost animate-hover"
+          style={{
+            padding: "8px 12px",
+            fontSize: "13px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            marginRight: "4px",
+            height: "36px",
+            background: "rgba(255, 255, 255, 0.02)",
+            border: "1px solid var(--border)",
+            borderRadius: "8px",
+            cursor: "pointer",
+            color: "var(--text-primary)",
+            transition: "all 0.2s ease",
+          }}
+        >
+          <ArrowLeft size={14} />
+          Back
+        </button>
+
         <div
           style={{
             width: "40px",
