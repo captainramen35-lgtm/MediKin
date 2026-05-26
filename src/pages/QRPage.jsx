@@ -16,10 +16,10 @@ const QRPage = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const printRef = useRef();
-  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  const isLocal = window.location.hostname !== "medikin-49af6.web.app" && window.location.hostname !== "medikin-49af6.firebaseapp.com";
   
   // Default to production link during local development to allow direct mobile scan support
-  const [useProductionUrl, setUseProductionUrl] = useState(isLocalhost);
+  const [useProductionUrl, setUseProductionUrl] = useState(isLocal);
 
   const productionUrl = `https://medikin-49af6.web.app/emergency/${id}`;
   const emergencyUrl = useProductionUrl ? productionUrl : `${window.location.origin}/emergency/${id}`;
@@ -62,8 +62,26 @@ const QRPage = () => {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(emergencyUrl);
-      addToast("Emergency link copied!", "success");
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(emergencyUrl);
+        addToast("Emergency link copied!", "success");
+      } else {
+        // Fallback for non-secure contexts or older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = emergencyUrl;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const successful = document.execCommand("copy");
+        document.body.removeChild(textArea);
+        if (successful) {
+          addToast("Emergency link copied!", "success");
+        } else {
+          throw new Error();
+        }
+      }
     } catch {
       addToast("Failed to copy link", "error");
     }
@@ -180,7 +198,7 @@ const QRPage = () => {
           </div>
         </div>
         {/* Development Helper Panel for Scanning */}
-        {isLocalhost && (
+        {isLocal && (
           <div
             className="glass-card"
             style={{
