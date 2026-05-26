@@ -8,6 +8,34 @@ const getLangInstruction = (lang) => {
   return "";
 };
 
+const sanitizeProfile = (obj) => {
+  if (!obj) return obj;
+  if (typeof obj !== "object") return obj;
+
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeProfile);
+  }
+
+  const cleaned = {};
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const val = obj[key];
+      if (typeof val === "string") {
+        if (val.length > 300 || val.startsWith("data:image/") || val.startsWith("data:application/")) {
+          cleaned[key] = `[Base64/Binary Truncated for AI optimization: ${val.substring(0, 30)}...]`;
+        } else {
+          cleaned[key] = val;
+        }
+      } else if (typeof val === "object") {
+        cleaned[key] = sanitizeProfile(val);
+      } else {
+        cleaned[key] = val;
+      }
+    }
+  }
+  return cleaned;
+};
+
 export const callGroq = async (messages, systemPrompt) => {
   const response = await fetch(GROQ_API_URL, {
     method: "POST",
@@ -36,6 +64,7 @@ export const callGroq = async (messages, systemPrompt) => {
 };
 
 export const generateEmergencyBrief = async (profile) => {
+  const cleanProfile = sanitizeProfile(profile);
   const systemPrompt = `You are an emergency medical AI. Generate a concise clinical emergency brief for a doctor or nurse who just scanned a patient's QR code. The patient cannot speak for themselves.
 
 Instructions:
@@ -48,7 +77,7 @@ Instructions:
   BRIEF: [paragraph here]
   ALERTS: ["alert1", "alert2"]${getLangInstruction(i18n.language)}`;
 
-  const userMessage = `Patient data: ${JSON.stringify(profile, null, 2)}`;
+  const userMessage = `Patient data: ${JSON.stringify(cleanProfile, null, 2)}`;
 
   const result = await callGroq(
     [{ role: "user", content: userMessage }],
@@ -75,8 +104,9 @@ Instructions:
 };
 
 export const generateChatResponse = async (profile, messages) => {
+  const cleanProfile = sanitizeProfile(profile);
   const systemPrompt = `You are a helpful medical assistant for a family managing a loved one's health profile. 
-The patient's profile: ${JSON.stringify(profile)}
+The patient's profile: ${JSON.stringify(cleanProfile)}
 Answer questions about their conditions, medications, what symptoms to watch for, and when to seek emergency care. 
 Never replace professional medical advice. Always recommend consulting a doctor for serious concerns. Keep answers clear and non-technical unless asked otherwise.${getLangInstruction(i18n.language)}`;
 
@@ -84,21 +114,22 @@ Never replace professional medical advice. Always recommend consulting a doctor 
 };
 
 export const generateAIRecommendations = async (profile, lang) => {
-  const age = profile.patient?.dob
-    ? new Date().getFullYear() - new Date(profile.patient.dob).getFullYear()
+  const cleanProfile = sanitizeProfile(profile);
+  const age = cleanProfile.patient?.dob
+    ? new Date().getFullYear() - new Date(cleanProfile.patient.dob).getFullYear()
     : "Unknown age";
 
   const systemPrompt = `You are a clinical AI health advisor. Generate personalized, specific health recommendations for this patient based on their exact medical profile. 
 
 Patient Profile:
-Name: ${profile.patient?.name || "Patient"}
+Name: ${cleanProfile.patient?.name || "Patient"}
 Age: ${age}
-Gender: ${profile.patient?.gender || "Unknown"}
-Blood Group: ${profile.patient?.bloodGroup || "Unknown"}
-Conditions: ${JSON.stringify(profile.conditions || [])}
-Current Medications: ${JSON.stringify(profile.medications || [])}
-Allergies: ${JSON.stringify(profile.allergies || [])}
-Past Surgeries: ${JSON.stringify(profile.surgeries || [])}
+Gender: ${cleanProfile.patient?.gender || "Unknown"}
+Blood Group: ${cleanProfile.patient?.bloodGroup || "Unknown"}
+Conditions: ${JSON.stringify(cleanProfile.conditions || [])}
+Current Medications: ${JSON.stringify(cleanProfile.medications || [])}
+Allergies: ${JSON.stringify(cleanProfile.allergies || [])}
+Past Surgeries: ${JSON.stringify(cleanProfile.surgeries || [])}
 
 Generate exactly 6 recommendations. Each must be specific to THIS patient's data, not generic advice.
 
@@ -142,12 +173,13 @@ Respond ONLY in this JSON format, no preamble, no markdown:
 };
 
 export const generateAICheckups = async (profile, lang) => {
+  const cleanProfile = sanitizeProfile(profile);
   const systemPrompt = `You are a clinical AI health advisor. Suggest routine or preventative medical checkups this patient should schedule based on their medical profile. 
 
 Patient Profile:
-Conditions: ${JSON.stringify(profile.conditions || [])}
-Current Medications: ${JSON.stringify(profile.medications || [])}
-Allergies: ${JSON.stringify(profile.allergies || [])}
+Conditions: ${JSON.stringify(cleanProfile.conditions || [])}
+Current Medications: ${JSON.stringify(cleanProfile.medications || [])}
+Allergies: ${JSON.stringify(cleanProfile.allergies || [])}
 
 Respond ONLY in this JSON format, no preamble, no markdown:
 [
@@ -188,13 +220,14 @@ Respond ONLY in this JSON format, no preamble, no markdown:
 };
 
 export const generateAIVitalsAnalysis = async (profile, vitals, lang) => {
+  const cleanProfile = sanitizeProfile(profile);
   const systemPrompt = `You are a clinical AI health advisor. Today's patient vitals:
 Steps: ${vitals.steps} steps
 Heart Rate: ${vitals.heartRate} BPM
 Sleep: ${vitals.sleep} hours
-
-Patient medical conditions: ${JSON.stringify(profile.conditions || [])}
-Patient current medications: ${JSON.stringify(profile.medications || [])}
+ 
+Patient medical conditions: ${JSON.stringify(cleanProfile.conditions || [])}
+Patient current medications: ${JSON.stringify(cleanProfile.medications || [])}
 
 Analyze these vitals in the context of their specific medical conditions. Provide 2-3 short, actionable clinical insights.
 
