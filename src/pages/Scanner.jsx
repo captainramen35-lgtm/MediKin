@@ -129,9 +129,23 @@ const Scanner = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleManual = () => {
-    const id = manualId.trim();
-    if (!id) return;
-    navigate(`/emergency/${id}`);
+    const input = manualId.trim();
+    if (!input) return;
+
+    // Check if the input is a URL and extract the actual profile ID
+    try {
+      const url = new URL(input.startsWith("/") ? `${window.location.origin}${input}` : input);
+      const parts = url.pathname.split("/");
+      const emergencyIdx = parts.indexOf("emergency");
+      if (emergencyIdx !== -1 && parts[emergencyIdx + 1]) {
+        navigate(`/emergency/${parts[emergencyIdx + 1]}`);
+        return;
+      }
+      navigate(`/emergency/${parts[parts.length - 1]}`);
+    } catch {
+      // Not a URL — treat as direct profile ID
+      navigate(`/emergency/${input}`);
+    }
   };
 
   return (
