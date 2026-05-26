@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
@@ -7,7 +7,7 @@ import { useProfile } from "../hooks/useProfile";
 import { useToast } from "../context/ToastContext";
 import BloodGroupBadge from "../components/BloodGroupBadge";
 import SkeletonLoader from "../components/SkeletonLoader";
-import { Download, Printer, Copy, ArrowLeft, Zap, MessageSquare } from "lucide-react";
+import { Download, Printer, Copy, ArrowLeft, Zap, MessageSquare, Globe, Laptop } from "lucide-react";
 import logoImg from "../assets/logo.png";
 
 const QRPage = () => {
@@ -16,8 +16,13 @@ const QRPage = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const printRef = useRef();
+  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  
+  // Default to production link during local development to allow direct mobile scan support
+  const [useProductionUrl, setUseProductionUrl] = useState(isLocalhost);
 
-  const emergencyUrl = `${window.location.origin}/emergency/${id}`;
+  const productionUrl = `https://medikin-49af6.web.app/emergency/${id}`;
+  const emergencyUrl = useProductionUrl ? productionUrl : `${window.location.origin}/emergency/${id}`;
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
@@ -174,6 +179,77 @@ const QRPage = () => {
             />
           </div>
         </div>
+        {/* Development Helper Panel for Scanning */}
+        {isLocalhost && (
+          <div
+            className="glass-card"
+            style={{
+              padding: "16px",
+              borderRadius: "16px",
+              marginBottom: "28px",
+              textAlign: "left",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              background: "rgba(255, 255, 255, 0.02)",
+            }}
+          >
+            <div style={{ display: "flex", gap: "10px", alignItems: "flex-start", marginBottom: "12px" }}>
+              <Zap size={16} color="var(--accent-red)" style={{ marginTop: "2px", flexShrink: 0 }} />
+              <div>
+                <h4 style={{ fontSize: "14px", fontWeight: 600, color: "var(--text-primary)", marginBottom: "4px" }}>
+                  Mobile QR Scanning (Development)
+                </h4>
+                <p style={{ fontSize: "12px", color: "var(--text-muted)", lineHeight: "1.5" }}>
+                  Your phone's camera cannot resolve <code>localhost</code>. Choose the QR target URL to test:
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                onClick={() => {
+                  setUseProductionUrl(true);
+                  addToast("Switched QR to Deployed Production URL", "info");
+                }}
+                className={useProductionUrl ? "btn-blue" : "btn-ghost"}
+                style={{
+                  flex: 1,
+                  padding: "8px 12px",
+                  fontSize: "12px",
+                  gap: "6px",
+                  borderRadius: "8px",
+                  justifyContent: "center",
+                  height: "36px",
+                }}
+              >
+                <Globe size={13} />
+                Production URL
+              </button>
+              <button
+                onClick={() => {
+                  setUseProductionUrl(false);
+                  addToast("Switched QR to Local Development URL", "info");
+                }}
+                className={!useProductionUrl ? "btn-blue" : "btn-ghost"}
+                style={{
+                  flex: 1,
+                  padding: "8px 12px",
+                  fontSize: "12px",
+                  gap: "6px",
+                  borderRadius: "8px",
+                  justifyContent: "center",
+                  height: "36px",
+                }}
+              >
+                <Laptop size={13} />
+                Localhost URL
+              </button>
+            </div>
+            
+            <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "10px", textAlign: "center" }}>
+              Target: <code style={{ color: "var(--text-primary)", background: "rgba(255,255,255,0.06)", padding: "2px 6px", borderRadius: "4px" }}>{emergencyUrl}</code>
+            </p>
+          </div>
+        )}
 
         {/* Action buttons */}
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginBottom: "24px" }}>
