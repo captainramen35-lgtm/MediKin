@@ -39,7 +39,7 @@ import { useToast } from "../context/ToastContext";
 import { SkeletonBrief } from "../components/SkeletonLoader";
 
 const VitalsPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { profileId } = useParams();
   const navigate = useNavigate();
   const { addToast } = useToast();

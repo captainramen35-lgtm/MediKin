@@ -36,6 +36,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useToast } from "../context/ToastContext";
+import { SkeletonBrief } from "../components/SkeletonLoader";
 
 const locales = {
   "en-US": enUS,
@@ -168,7 +169,7 @@ const CalendarPage = () => {
   }, [profile]);
 
   // Request notification permissions and push reminders
-  const checkCheckupReminders = (list) => {
+  function checkCheckupReminders(list) {
     if (!("Notification" in window)) return;
 
     if (Notification.permission === "default") {

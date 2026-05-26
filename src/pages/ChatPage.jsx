@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProfile } from "../hooks/useProfile";
 import { generateChatResponse } from "../utils/groq";
-import { Send, Bot, User, Zap, ArrowLeft } from "lucide-react";
+import { Send, Bot, User, ArrowLeft } from "lucide-react";
 
 const SUGGESTED_QUESTIONS = [
   "What does the first medication do?",
@@ -42,14 +42,9 @@ const ChatPage = () => {
         content: m.content,
       }));
 
-      const systemPrompt = `You are a helpful medical assistant for a family managing a loved one's health profile. 
-The patient's profile: ${JSON.stringify(profile)}
-Answer questions about their conditions, medications, what symptoms to watch for, and when to seek emergency care. 
-Never replace professional medical advice. Always recommend consulting a doctor for serious concerns. Keep answers clear and non-technical unless asked otherwise.`;
-
       const reply = await generateChatResponse(profile, groqMessages);
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
