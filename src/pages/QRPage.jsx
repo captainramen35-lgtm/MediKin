@@ -16,12 +16,12 @@ const QRPage = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const printRef = useRef();
-  const isLocal = window.location.hostname !== "medikin-49af6.web.app" && window.location.hostname !== "medikin-49af6.firebaseapp.com";
+  const isLocal = window.location.hostname !== "medi-kin.vercel.app" && window.location.hostname !== "medikin-49af6.web.app" && window.location.hostname !== "medikin-49af6.firebaseapp.com";
   
   // Default to production link during local development to allow direct mobile scan support
   const [useProductionUrl, setUseProductionUrl] = useState(isLocal);
 
-  const productionUrl = `https://medikin-49af6.web.app/emergency/${id}`;
+  const productionUrl = `https://medi-kin.vercel.app/emergency/${id}`;
   const emergencyUrl = useProductionUrl ? productionUrl : `${window.location.origin}/emergency/${id}`;
 
   const handlePrint = useReactToPrint({
